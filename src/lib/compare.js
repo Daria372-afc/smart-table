@@ -294,11 +294,17 @@ function createComparison(ruleNames, customRules = []) {
     return (source, target) => {
         const rulesList = [
             ...ruleNames.map(ruleName => {
+                const ruleFunc = rules[ruleName];
+
+                if (typeof ruleFunc !== 'function') {
+                    console.warn(`Rule "${ruleName}" не найдена или не является функцией`);
+                    return () => ({continue: true});
+                }
                 // Для правил, которым нужны параметры
                 if (ruleName === 'skipNonExistentSourceFields') {
-                    return rules[ruleName](source);
+                    return ruleFunc(source);
                 }
-                return rules[ruleName]();
+                return ruleFunc();
             }),
             ...customRules
         ];
