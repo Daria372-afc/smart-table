@@ -1,19 +1,28 @@
-import {rules, createComparison} from "../lib/compare.js";
+// @todo: #5.1 — настроить компаратор
+// компаратор больше не используется, импорт удалён
+// import {rules, createComparison} from "../lib/compare.js";
 
+  export function initSearching(searchField) {
 
-export function initSearching(searchField) {
     // @todo: #5.1 — настроить компаратор
-    const compare = createComparison(['skipEmptyTargetValues'],
-        [
-        //используем только нужное правило
+    // компаратор больше не нужен, поэтому эту часть удаляем полностью
 
-        rules.searchMultipleFields(searchField, ['date', 'customer', 'seller'], false)
-        ]
-    );
-
-
-    return (data, state, action) => {
+    return (query, state, action) => {
         // @todo: #5.2 — применить компаратор
-        return data.filter((row) => compare(row, state));
+        // теперь поиск работает через сервер и формирует query.search
+
+        return state[searchField]
+            ? Object.assign({}, query, {
+                search: state[searchField] // передаём строку поиска на сервер
+            })
+            : query; // если строка пустая — возвращаем query без изменений
     };
 }
+
+
+
+
+
+
+
+
