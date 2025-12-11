@@ -1,8 +1,6 @@
 import './fonts/ys-display/fonts.css'
 import './style.css'
 
-import { data as sourceData } from "./data/dataset_1.js";
-
 import { initData } from "./data.js";
 import { processFormData } from "./lib/utils.js";
 
@@ -12,8 +10,7 @@ import { initSorting } from "./components/sorting.js";
 import { initFiltering } from "./components/filtering.js";
 import { initSearching } from "./components/searching.js";
 
-// Подключаем мок-API
-  const api = initData(sourceData);
+const api = initData();
 
 /**
  * Сбор и обработка полей из таблицы
@@ -85,7 +82,7 @@ async function render(action) {
 
     query = applyPagination(query, state, action); // формируем параметры пагинации
 
-    const { total, items, indexes } = await api.getRecords(query); // получаем данные с сервера
+    const { total, items } = await api.getRecords(query); // получаем данные с сервера
 
     updatePagination(total, query); // обновляем визуальный компонент пагинации
 
@@ -97,12 +94,13 @@ async function render(action) {
  */
 async function init() {
     const indexes = await api.getIndexes(); // получаем данные для фильтров
-    updateIndexes(sampleTable.filter.elements, indexes); // заполняем select-ы при старте
+    updateIndexes(sampleTable.filter.elements, {
+    searchBySeller: indexes.sellers,
+});
 
-    render(); // первый рендер таблицы
 }
 
-init();
+init().then(render);
 
 
 

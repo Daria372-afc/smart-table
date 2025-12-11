@@ -1,16 +1,8 @@
-export function initData(sourceData) {
     const BASE_URL = 'https://webinars.webdev.education-services.ru/sp7-api';
 
-    // создаём индексы из исходного локального sourceData
-    let sellers = sourceData.sellers.reduce((acc, v) => {
-        acc[v.id] = `${v.first_name} ${v.last_name}`;
-        return acc;
-    }, {});
-    let customers = sourceData.customers.reduce((acc, v) => {
-        acc[v.id] = `${v.first_name} ${v.last_name}`;
-        return acc;
-    }, {});
-
+    export function initData() {
+    let sellers;
+    let customers;
     let lastResult;
     let lastQuery;
 
@@ -25,8 +17,8 @@ export function initData(sourceData) {
     const getIndexes = async () => {
         if (!sellers || !customers) {
             [sellers, customers] = await Promise.all([
-                fetch(`${BASE_URL}/sellers).then(res => res.json()`),
-                fetch(`${BASE_URL}/customers).then(res => res.json()`)
+                fetch(`${BASE_URL}/sellers`).then(res => res.json()),
+                fetch(`${BASE_URL}/customers`).then(res => res.json())
             ]);
         }
         return { sellers, customers };
@@ -49,6 +41,7 @@ export function initData(sourceData) {
 
     return { getIndexes, getRecords };
 }
+
 
 
 
