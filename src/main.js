@@ -44,7 +44,7 @@ const applySorting = initSorting([
 ]);
 
 // Инициализация поиска
-  const applySearching = initSearching(sampleTable.search.elements.searchField);
+  const applySearching = initSearching('search');
 
 // Инициализация пагинации
 const { applyPagination, updatePagination } = initPagination(
